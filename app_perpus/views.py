@@ -3,14 +3,32 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group, Permission
 from django.shortcuts import get_object_or_404
 from datetime import date
-from . models import Anggota, Kategori, Petugas, Buku
-from .forms import KategoriForm 
-
+from .models import Anggota, Kategori, Petugas, Buku
+from .forms import KategoriForm, BukuForm, AnggotaForm, PeminjamanForm, PetugasForm
+from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
     return render(request, 'dashboard.html')
 
+def SigninPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect ('dashboard')
+        else:
+            return redirect('login')
+    return render(request, 'login.html')
+
+def SignoutPage(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')
 
 def SignupPage(request):
     if request.method == 'POST':
@@ -38,12 +56,11 @@ def SignupPage(request):
             return redirect('/')
 
     return render(request, 'signup.html')
-
-
+ 
 # KATERGORI
 def list_kategori(request):
-    kategoris = read_kategori()
-    return render(request, 'list_kategori.html', {'kategoris': kategoris})
+    kategoris = Kategori.objects.all()
+    return render(request, 'kategori.html', {'kategoris': kategoris})
 
 # Fungsi untuk menambahkan kategori baru
 def create_kategori(request):
@@ -77,118 +94,143 @@ def delete_kategori(request, kategori_id):
 
 # BUKU
 # Fungsi untuk menambahkan buku baru
-def create_buku(judul, penulis, tahun_terbit, kategori_id):
-    kategori = get_object_or_404(Kategori, pk=kategori_id)
-    return Buku.objects.create(judul=judul, penulis=penulis, tahun_terbit=tahun_terbit, kategori=kategori)
+def list_buku(request):
+    bukus = Buku.objects.all()
+    return render(request, 'buku.html', {'bukus': bukus})
 
-# Fungsi untuk membaca (menampilkan) semua buku
-def read_buku():
-    return Buku.objects.all()
+# Fungsi untuk menambahkan buku baru
+def create_buku(request):
+    if request.method == 'POST':
+        form = BukuForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_buku')
+    else:
+        form = BukuForm()
+    return render(request, 'create_buku.html', {'form': form})
 
-# Fungsi untuk memperbarui informasi buku
-def update_buku(buku_id, judul_baru, penulis_baru, tahun_terbit_baru, kategori_id_baru):
-    buku = get_object_or_404(Buku, pk=buku_id)
-    kategori_baru = get_object_or_404(Kategori, pk=kategori_id_baru)
-    
-    buku.judul = judul_baru
-    buku.penulis = penulis_baru
-    buku.tahun_terbit = tahun_terbit_baru
-    buku.kategori = kategori_baru
-    
-    buku.save()
+# Fungsi untuk memperbarui buku
+def update_buku(request, buku_id):
+    buku = get_object_or_404(buku, pk=buku_id)
+    if request.method == 'POST':
+        form = BukuForm(request.POST, instance=buku)
+        if form.is_valid():
+            form.save()
+            return redirect('list_buku')
+    else:
+        form = BukuForm(instance=buku)
+    return render(request, 'update_buku.html', {'form': form, 'buku': buku})
 
 # Fungsi untuk menghapus buku
-def delete_buku(buku_id):
-    buku = get_object_or_404(Buku, pk=buku_id)
+def delete_buku(request, buku_id):
+    buku = get_object_or_404(buku, pk=buku_id)
     buku.delete()
+    return redirect('list_buku')
 
 
 # ANGGOTA
+# Fungsi untuk menambahkan Anggota baru
+def list_anggota(request):
+    anggotas = Anggota.objects.all()
+    return render(request, 'anggota.html', {'anggotas': anggotas})
+
 # Fungsi untuk menambahkan anggota baru
-def create_anggota(username, password, alamat, nomor_telepon):
-    user = User.objects.create(username=username)
-    user.set_password(password)
-    user.save()
-    
-    anggota = Anggota.objects.create(user=user, alamat=alamat, nomor_telepon=nomor_telepon)
-    return anggota
+def create_anggota(request):
+    if request.method == 'POST':
+        form = AnggotaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_anggota')
+    else:
+        form = AnggotaForm()
+    return render(request, 'create_anggota.html', {'form': form})
 
-# Fungsi untuk membaca (menampilkan) semua anggota
-def read_anggota(request):
-    data = Anggota.objects.all()
-    return render(request,'anggota.html')
-
-# Fungsi untuk memperbarui informasi anggota
-def update_anggota(anggota_id, alamat_baru, nomor_telepon_baru):
-    anggota = get_object_or_404(Anggota, pk=anggota_id)
-    
-    anggota.alamat = alamat_baru
-    anggota.nomor_telepon = nomor_telepon_baru
-    
-    anggota.save()
+# Fungsi untuk memperbarui anggota
+def update_anggota(request, anggota_id):
+    anggota = get_object_or_404(anggota, pk=anggota_id)
+    if request.method == 'POST':
+        form = AnggotaForm(request.POST, instance=anggota)
+        if form.is_valid():
+            form.save()
+            return redirect('list_anggota')
+    else:
+        form = AnggotaForm(instance=anggota)
+    return render(request, 'update_anggota.html', {'form': form, 'anggota': anggota})
 
 # Fungsi untuk menghapus anggota
-def delete_anggota(anggota_id):
-    anggota = get_object_or_404(Anggota, pk=anggota_id)
+def delete_anggota(request, anggota_id):
+    anggota = get_object_or_404(anggota, pk=anggota_id)
     anggota.delete()
+    return redirect('list_anggota')
 
 
 # PINJAMAN
-# Fungsi untuk menambahkan peminjaman buku
-def create_peminjaman(buku_id, anggota_id, tanggal_peminjaman, tanggal_pengembalian, status):
-    buku = get_object_or_404(Buku, pk=buku_id)
-    anggota = get_object_or_404(Anggota, pk=anggota_id)
-    
-    return Peminjaman.objects.create(
-        buku=buku,
-        anggota=anggota,
-        tanggal_peminjaman=tanggal_peminjaman,
-        tanggal_pengembalian=tanggal_pengembalian,
-        status=status
-    )
+# Fungsi untuk menambahkan peminjaman baru
+def list_peminjaman(request):
+    peminjamans = Peminjaman.objects.all()
+    return render(request, 'peminjaman.html', {'peminjamans': peminjamans})
 
-# Fungsi untuk membaca (menampilkan) semua peminjaman
-def read_peminjaman():
-    return Peminjaman.objects.all()
+# Fungsi untuk menambahkan peminjaman baru
+def create_peminjaman(request):
+    if request.method == 'POST':
+        form = PeminjamanForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_peminjaman')
+    else:
+        form = PeminjamanForm()
+    return render(request, 'create_peminjaman.html', {'form': form})
 
-# Fungsi untuk memperbarui informasi peminjaman
-def update_peminjaman(peminjaman_id, tanggal_pengembalian_baru, status_baru):
-    peminjaman = get_object_or_404(Peminjaman, pk=peminjaman_id)
-    
-    peminjaman.tanggal_pengembalian = tanggal_pengembalian_baru
-    peminjaman.status = status_baru
-    
-    peminjaman.save()
+# Fungsi untuk memperbarui peminjaman
+def update_peminjaman(request, peminjaman_id):
+    peminjaman = get_object_or_404(peminjaman, pk=peminjaman_id)
+    if request.method == 'POST':
+        form = PeminjamanForm(request.POST, instance=peminjaman)
+        if form.is_valid():
+            form.save()
+            return redirect('list_peminjaman')
+    else:
+        form = PeminjamanForm(instance=peminjaman)
+    return render(request, 'update_peminjaman.html', {'form': form, 'peminjaman': peminjaman})
 
 # Fungsi untuk menghapus peminjaman
-def delete_peminjaman(peminjaman_id):
-    peminjaman = get_object_or_404(Peminjaman, pk=peminjaman_id)
+def delete_peminjaman(request, peminjaman_id):
+    peminjaman = get_object_or_404(peminjaman, pk=peminjaman_id)
     peminjaman.delete()
+    return redirect('list_peminjaman')
 
 
 # PETUGAS
 # Fungsi untuk menambahkan petugas baru
-def create_petugas(username, password, posisi):
-    user = User.objects.create(username=username, is_staff=True)
-    user.set_password(password)
-    user.save()
-    
-    petugas = Petugas.objects.create(user=user, posisi=posisi)
-    return petugas
+def list_petugas(request):
+    petugass = Petugas.objects.all()
+    return render(request, 'petugas.html', {'petugass': petugass})
 
-# Fungsi untuk membaca (menampilkan) semua petugas
-def read_petugas():
-    return Petugas.objects.all()
+# Fungsi untuk menambahkan petugas baru
+def create_petugas(request):
+    if request.method == 'POST':
+        form = PetugasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_petugas')
+    else:
+        form = PetugasForm()
+    return render(request, 'create_petugas.html', {'form': form})
 
-# Fungsi untuk memperbarui informasi petugas
-def update_petugas(petugas_id, posisi_baru):
-    petugas = get_object_or_404(Petugas, pk=petugas_id)
-    
-    petugas.posisi = posisi_baru
-    
-    petugas.save()
+# Fungsi untuk memperbarui petugas
+def update_petugas(request, petugas_id):
+    petugas = get_object_or_404(petugas, pk=petugas_id)
+    if request.method == 'POST':
+        form = PetugasForm(request.POST, instance=petugas)
+        if form.is_valid():
+            form.save()
+            return redirect('list_petugas')
+    else:
+        form = PetugasForm(instance=petugas)
+    return render(request, 'update_petugas.html', {'form': form, 'petugas': petugas})
 
 # Fungsi untuk menghapus petugas
-def delete_petugas(petugas_id):
-    petugas = get_object_or_404(Petugas, pk=petugas_id)
+def delete_petugas(request, petugas_id):
+    petugas = get_object_or_404(petugas, pk=petugas_id)
     petugas.delete()
+    return redirect('list_petugas')
