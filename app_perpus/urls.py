@@ -6,7 +6,7 @@ urlpatterns = [
     path('signup/', views.SignupPage, name='signup'),
 
     # Kategori
-    path('kategori/', views.read_kategori, name='read_kategori'),
+    path('kategori/', views.list_kategori, name='list_kategori'),
     path('kategori/create/', views.create_kategori, name='create_kategori'),
     path('kategori/update/<int:kategori_id>/', views.update_kategori, name='update_kategori'),
     path('kategori/delete/<int:kategori_id>/', views.delete_kategori, name='delete_kategori'),

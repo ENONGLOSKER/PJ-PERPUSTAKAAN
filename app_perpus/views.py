@@ -1,9 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User, Group, Permission
 from django.shortcuts import get_object_or_404
 from datetime import date
 from . models import Anggota, Kategori, Petugas, Buku
+from .forms import KategoriForm 
 
 
 # Create your views here.
@@ -40,24 +41,38 @@ def SignupPage(request):
 
 
 # KATERGORI
+def list_kategori(request):
+    kategoris = read_kategori()
+    return render(request, 'list_kategori.html', {'kategoris': kategoris})
+
 # Fungsi untuk menambahkan kategori baru
-def create_kategori(nama):
-    return Kategori.objects.create(nama=nama)
+def create_kategori(request):
+    if request.method == 'POST':
+        form = KategoriForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_kategori')
+    else:
+        form = KategoriForm()
+    return render(request, 'create_kategori.html', {'form': form})
 
-# Fungsi untuk membaca (menampilkan) semua kategori
-def read_kategori():
-    return Kategori.objects.all()
-
-# Fungsi untuk memperbarui nama kategori
-def update_kategori(kategori_id, nama_baru):
+# Fungsi untuk memperbarui kategori
+def update_kategori(request, kategori_id):
     kategori = get_object_or_404(Kategori, pk=kategori_id)
-    kategori.nama = nama_baru
-    kategori.save()
+    if request.method == 'POST':
+        form = KategoriForm(request.POST, instance=kategori)
+        if form.is_valid():
+            form.save()
+            return redirect('list_kategori')
+    else:
+        form = KategoriForm(instance=kategori)
+    return render(request, 'update_kategori.html', {'form': form, 'kategori': kategori})
 
 # Fungsi untuk menghapus kategori
-def delete_kategori(kategori_id):
+def delete_kategori(request, kategori_id):
     kategori = get_object_or_404(Kategori, pk=kategori_id)
     kategori.delete()
+    return redirect('list_kategori')
 
 
 # BUKU
