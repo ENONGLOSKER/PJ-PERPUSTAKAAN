@@ -10,9 +10,9 @@
 }
 
 :root {
-  --blue: #2a2185;
-  --white: #fff;
-  --gray: #f5f5f5;
+  --primary: #b5e006;
+  --secondery: #ffffff;
+  --gray: #f2f2f2;
   --black1: #222;
   --black2: #999;
 }
@@ -32,8 +32,8 @@ body {
   position: fixed;
   width: 300px;
   height: 100%;
-  background: var(--blue);
-  border-left: 10px solid var(--blue);
+  background: var(--primary);
+  border-left: 10px solid var(--primary);
   transition: 0.5s;
   overflow: hidden;
 }
@@ -58,7 +58,7 @@ body {
 
 .navigation ul li:hover,
 .navigation ul li.hovered {
-  background-color: var(--white);
+  background-color: var(--secondery);
 }
 
 .navigation ul li:nth-child(1) {
@@ -72,11 +72,11 @@ body {
   width: 100%;
   display: flex;
   text-decoration: none;
-  color: var(--white);
+  color: var(--black1);
 }
 .navigation ul li:hover a,
 .navigation ul li.hovered a {
-  color: var(--blue);
+  color: var(--primary);
 }
 
 .navigation ul li a .icon {
@@ -112,7 +112,7 @@ body {
   height: 50px;
   background-color: transparent;
   border-radius: 50%;
-  box-shadow: 35px 35px 0 10px var(--white);
+  box-shadow: 35px 35px 0 10px var(--secondery);
   pointer-events: none;
 }
 .navigation ul li:hover a::after,
@@ -125,7 +125,7 @@ body {
   height: 50px;
   background-color: transparent;
   border-radius: 50%;
-  box-shadow: 35px -35px 0 10px var(--white);
+  box-shadow: 35px -35px 0 10px var(--secondery);
   pointer-events: none;
 }
 
@@ -135,7 +135,7 @@ body {
   width: calc(100% - 300px);
   left: 300px;
   min-height: 100vh;
-  background: var(--white);
+  background: var(--secondery);
   transition: 0.5s;
 }
 .main.active {
@@ -222,7 +222,7 @@ body {
 
 .cardBox .card {
   position: relative;
-  background: var(--white);
+  background: var(--secondery);
   padding: 30px;
   border-radius: 20px;
   display: flex;
@@ -235,7 +235,7 @@ body {
   position: relative;
   font-weight: 500;
   font-size: 2.5rem;
-  color: var(--blue);
+  color: var(--primary);
 }
 
 .cardBox .card .cardName {
@@ -250,12 +250,12 @@ body {
 }
 
 .cardBox .card:hover {
-  background: var(--blue);
+  background: var(--primary);
 }
 .cardBox .card:hover .numbers,
 .cardBox .card:hover .cardName,
 .cardBox .card:hover .iconBx {
-  color: var(--white);
+  color: var(--secondery);
 }
 
 /* ================== Order Details List ============== */
@@ -273,7 +273,7 @@ body {
   position: relative;
   display: grid;
   min-height: 500px;
-  background: var(--white);
+  background: var(--secondery);
   padding: 20px;
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
@@ -286,14 +286,14 @@ body {
 }
 .cardHeader h2 {
   font-weight: 600;
-  color: var(--blue);
+  color: var(--primary);
 }
 .cardHeader .btn {
   position: relative;
   padding: 5px 10px;
-  background: var(--blue);
+  background: var(--primary);
   text-decoration: none;
-  color: var(--white);
+  color: var(--black1);
   border-radius: 6px;
 }
 
@@ -313,8 +313,8 @@ body {
   border-bottom: none;
 }
 .details .recentOrders table tbody tr:hover {
-  background: var(--blue);
-  color: var(--white);
+  background: var(--primary);
+  color: var(--secondery);
 }
 .details .recentOrders table tr td {
   padding: 10px;
@@ -331,7 +331,7 @@ body {
 .status.delivered {
   padding: 2px 4px;
   background: #8de02c;
-  color: var(--white);
+  color: var(--secondery);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
@@ -339,7 +339,7 @@ body {
 .status.pending {
   padding: 2px 4px;
   background: #e9b10a;
-  color: var(--white);
+  color: var(--secondery);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
@@ -347,7 +347,7 @@ body {
 .status.return {
   padding: 2px 4px;
   background: #f00;
-  color: var(--white);
+  color: var(--secondery);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
@@ -355,7 +355,7 @@ body {
 .status.inProgress {
   padding: 2px 4px;
   background: #1795ce;
-  color: var(--white);
+  color: var(--secondery);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
@@ -366,7 +366,7 @@ body {
   display: grid;
   min-height: 500px;
   padding: 20px;
-  background: var(--white);
+  background: var(--secondery);
   box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 }
@@ -398,11 +398,11 @@ body {
   color: var(--black2);
 }
 .recentCustomers table tr:hover {
-  background: var(--blue);
-  color: var(--white);
+  background: var(--primary);
+  color: var(--secondery);
 }
 .recentCustomers table tr:hover td h4 span {
-  color: var(--white);
+  color: var(--secondery);
 }
 
 /* ====================== Responsive Design ========================== */

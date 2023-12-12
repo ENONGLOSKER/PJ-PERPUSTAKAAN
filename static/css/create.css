@@ -1,0 +1,55 @@
+body{
+    background: linear-gradient(90deg, #CEFF09 56%, #bae706 100%);  
+}
+.container{
+    margin: 50px auto;
+    box-shadow: -10px -15px 80px #8ee403;
+    background-color: rgb(255, 255, 255);
+    width: 900px;
+    height: 500px;
+    padding: 20px;
+    display: flex;
+    border-radius: 12px;
+}
+.container .form{
+    background-color: rgb(242, 242, 242);
+    width: 50%;
+    /* text-align: center; */
+    border-radius: 8px;
+}
+.container .form form{
+    margin: 20px;
+    padding: 50px 35px;
+}
+.container .form input{
+    width: 100%;
+    height: 10px;
+    padding: 15px 20px;
+}
+input[type=file]::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: #084cdf;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+  }
+  
+  input[type=file]::file-selector-button:hover {
+    background: #0d45a5;
+  }
+
+
+
+.container .img{
+    background-color: rgb(0, 110, 255);
+    width: 50%;
+    
+}
+.container .img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      
+}

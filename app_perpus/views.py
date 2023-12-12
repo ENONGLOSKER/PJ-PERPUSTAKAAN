@@ -3,7 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User, Group, Permission
 from django.shortcuts import get_object_or_404
 from datetime import date
-from .models import Anggota, Kategori, Petugas, Buku
+from django.utils import timezone
+from .models import Anggota, Kategori, Petugas, Buku, User
 from .forms import KategoriForm, BukuForm, AnggotaForm, PeminjamanForm, PetugasForm
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
@@ -57,6 +58,52 @@ def SignupPage(request):
 
     return render(request, 'signup.html')
  
+# ANGGOTA
+# Fungsi untuk menambahkan Anggota baru
+def list_anggota(request):
+    anggotas = Anggota.objects.all()
+    user = User.objects.all()
+    recent_anggotas = Anggota.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=7))
+    context = {
+        'recent_anggotas': recent_anggotas,
+        'anggotas': anggotas,
+        'user': user,
+    }
+    return render(request, 'anggota.html', context)
+
+# Fungsi untuk menambahkan anggota baru
+def create_anggota(request):
+    if request.method == 'POST':
+        form = AnggotaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('list_anggota')
+    else:
+        form = AnggotaForm()
+
+    return render(request, 'anggota_add.html', {'form': form})
+
+# Fungsi untuk memperbarui anggota
+def update_anggota(request, anggota_id):
+    anggota = get_object_or_404(Anggota, id=anggota_id)
+
+    if request.method == 'POST':
+        form = AnggotaForm(request.POST, request.FILES, instance=anggota)
+        if form.is_valid():
+            form.save()
+            return redirect('list_anggota') 
+    else:
+        form = AnggotaForm(instance=anggota)
+
+    return render(request, 'anggota_add.html', {'form': form, 'anggota': anggota})
+
+# Fungsi untuk menghapus anggota
+def delete_anggota(request, anggota_id):
+    anggota = get_object_or_404(Anggota, pk=anggota_id)
+    anggota.delete()
+    return redirect('list_anggota')
+
+
 # KATERGORI
 def list_kategori(request):
     kategoris = Kategori.objects.all()
@@ -126,42 +173,6 @@ def delete_buku(request, buku_id):
     buku = get_object_or_404(buku, pk=buku_id)
     buku.delete()
     return redirect('list_buku')
-
-
-# ANGGOTA
-# Fungsi untuk menambahkan Anggota baru
-def list_anggota(request):
-    anggotas = Anggota.objects.all()
-    return render(request, 'anggota.html', {'anggotas': anggotas})
-
-# Fungsi untuk menambahkan anggota baru
-def create_anggota(request):
-    if request.method == 'POST':
-        form = AnggotaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list_anggota')
-    else:
-        form = AnggotaForm()
-    return render(request, 'create_anggota.html', {'form': form})
-
-# Fungsi untuk memperbarui anggota
-def update_anggota(request, anggota_id):
-    anggota = get_object_or_404(anggota, pk=anggota_id)
-    if request.method == 'POST':
-        form = AnggotaForm(request.POST, instance=anggota)
-        if form.is_valid():
-            form.save()
-            return redirect('list_anggota')
-    else:
-        form = AnggotaForm(instance=anggota)
-    return render(request, 'update_anggota.html', {'form': form, 'anggota': anggota})
-
-# Fungsi untuk menghapus anggota
-def delete_anggota(request, anggota_id):
-    anggota = get_object_or_404(anggota, pk=anggota_id)
-    anggota.delete()
-    return redirect('list_anggota')
 
 
 # PINJAMAN
