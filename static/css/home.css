@@ -1,0 +1,94 @@
+:root {
+    /* warna */
+    --satu: #CEFF09;
+    --dua: #ff9c10; 
+    --tiga: #323232; 
+    --empat: #ffffff; 
+
+    /* font */
+    --font:'Kanit', sans-serif;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+}
+h2 {
+    margin: 10px 70px ;
+}
+
+body{
+    background:var(--satu);
+    font-family: var(--font);
+    color: var(--tiga);
+}
+.container{
+    display: flex;
+    margin: 30px 0;
+    gap: 80px;
+}
+
+span{
+    color: var(--dua);
+}
+
+/* bagian kiri */
+.container .d-l{
+    margin-left: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.container .d-l h1{
+    font-weight: bold;
+    font-size: 50px;
+}
+.container .d-l .btn{
+    display: flex;
+    gap: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+.container .d-l .btn a{
+    padding: 10px 40px;
+    font-size: 15px;
+    font-weight: bold;
+    outline: none;
+    text-decoration: none;
+}
+.container .d-l .btn a:nth-child(1){
+    background-color: var(--dua);
+    border: 4px solid var(--dua);
+    color: var(--empat);
+}
+.container .d-l .btn a:nth-child(2){
+    background-color: transparent;
+    border: 3px solid var(--tiga);
+}
+.container .d-l .btn a:nth-child(1):hover{
+    cursor: pointer;
+    background-color: var(--tiga);
+    color: var(--empat);
+    border: 3px solid var(--tiga);
+    box-shadow: 5px 5px 20px var(--dua);
+}
+.container .d-l .btn a:nth-child(2):hover{
+    cursor: pointer;
+    background-color: var(--tiga);
+    color: var(--empat);
+    box-shadow: 5px 5px 20px var(--dua);
+}
+
+/* bagian kanan */
+.container .d-l p{
+    font-weight: 400;
+    font-size: 28px;
+}
+.container .d-r img{
+    border-radius: 12px 0 0 12px;
+    overflow: hidden;
+    object-fit: cover;
+    box-shadow: -10px 15px 80px rgb(105, 254, 45);
+
+}
