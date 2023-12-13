@@ -8,13 +8,17 @@ from .models import Anggota, Kategori, Petugas, Buku, User
 from .forms import KategoriForm, BukuForm, AnggotaForm, PeminjamanForm, PetugasForm
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
+
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
-
+@login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    anggotas = Anggota.objects.all()
+    return render(request, 'dashboard.html',{'anggota':anggotas})
 
 def SigninPage(request):
     if request.method == 'POST':
@@ -26,13 +30,12 @@ def SigninPage(request):
             login(request, user)
             return redirect ('dashboard')
         else:
-            return redirect('login')
-    return render(request, 'login.html')
+            return redirect('signin')
+    return render(request, 'signin.html')
 
 def SignoutPage(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('login')
+    logout(request)
+    return redirect('index')
 
 def SignupPage(request):
     if request.method == 'POST':
@@ -63,18 +66,34 @@ def SignupPage(request):
  
 # ANGGOTA
 # Fungsi untuk menambahkan Anggota baru
+@login_required
 def list_anggota(request):
     anggotas = Anggota.objects.all()
+    search_query = request.GET.get('cari')
+
+    if search_query:
+        anggota_serc = Anggota.objects.filter(
+            # jika berrelasi namaFieldDI TABEL 2__namaFieldDI TABEL 1__ICONTAINS
+            Q(user__username__icontains=search_query) | Q(alamat__icontains=search_query)
+        )
+    else:
+        anggota_serc = anggotas
+    
+    paginator = Paginator(anggota_serc, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     user = User.objects.all()
     recent_anggotas = Anggota.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=7))
     context = {
         'recent_anggotas': recent_anggotas,
-        'anggotas': anggotas,
+        'anggotas': page_obj,
         'user': user,
     }
     return render(request, 'anggota.html', context)
 
 # Fungsi untuk menambahkan anggota baru
+@login_required
 def create_anggota(request):
     if request.method == 'POST':
         form = AnggotaForm(request.POST, request.FILES)
@@ -87,6 +106,7 @@ def create_anggota(request):
     return render(request, 'anggota_add.html', {'form': form})
 
 # Fungsi untuk memperbarui anggota
+@login_required
 def update_anggota(request, anggota_id):
     anggota = get_object_or_404(Anggota, id=anggota_id)
 
@@ -101,6 +121,7 @@ def update_anggota(request, anggota_id):
     return render(request, 'anggota_add.html', {'form': form, 'anggota': anggota})
 
 # Fungsi untuk menghapus anggota
+@login_required
 def delete_anggota(request, anggota_id):
     anggota = get_object_or_404(Anggota, pk=anggota_id)
     anggota.delete()
@@ -108,11 +129,13 @@ def delete_anggota(request, anggota_id):
 
 
 # KATERGORI
+@login_required
 def list_kategori(request):
     kategoris = Kategori.objects.all()
     return render(request, 'kategori.html', {'kategoris': kategoris})
 
 # Fungsi untuk menambahkan kategori baru
+@login_required
 def create_kategori(request):
     if request.method == 'POST':
         form = KategoriForm(request.POST)
@@ -124,6 +147,7 @@ def create_kategori(request):
     return render(request, 'create_kategori.html', {'form': form})
 
 # Fungsi untuk memperbarui kategori
+@login_required
 def update_kategori(request, kategori_id):
     kategori = get_object_or_404(Kategori, pk=kategori_id)
     if request.method == 'POST':
@@ -136,6 +160,7 @@ def update_kategori(request, kategori_id):
     return render(request, 'update_kategori.html', {'form': form, 'kategori': kategori})
 
 # Fungsi untuk menghapus kategori
+@login_required
 def delete_kategori(request, kategori_id):
     kategori = get_object_or_404(Kategori, pk=kategori_id)
     kategori.delete()
@@ -144,11 +169,13 @@ def delete_kategori(request, kategori_id):
 
 # BUKU
 # Fungsi untuk menambahkan buku baru
+@login_required
 def list_buku(request):
     bukus = Buku.objects.all()
     return render(request, 'buku.html', {'bukus': bukus})
 
 # Fungsi untuk menambahkan buku baru
+@login_required
 def create_buku(request):
     if request.method == 'POST':
         form = BukuForm(request.POST)
@@ -160,6 +187,7 @@ def create_buku(request):
     return render(request, 'create_buku.html', {'form': form})
 
 # Fungsi untuk memperbarui buku
+@login_required
 def update_buku(request, buku_id):
     buku = get_object_or_404(buku, pk=buku_id)
     if request.method == 'POST':
@@ -172,6 +200,7 @@ def update_buku(request, buku_id):
     return render(request, 'update_buku.html', {'form': form, 'buku': buku})
 
 # Fungsi untuk menghapus buku
+@login_required
 def delete_buku(request, buku_id):
     buku = get_object_or_404(buku, pk=buku_id)
     buku.delete()
@@ -180,11 +209,13 @@ def delete_buku(request, buku_id):
 
 # PINJAMAN
 # Fungsi untuk menambahkan peminjaman baru
+@login_required
 def list_peminjaman(request):
     peminjamans = Peminjaman.objects.all()
     return render(request, 'peminjaman.html', {'peminjamans': peminjamans})
 
 # Fungsi untuk menambahkan peminjaman baru
+@login_required
 def create_peminjaman(request):
     if request.method == 'POST':
         form = PeminjamanForm(request.POST)
@@ -196,6 +227,7 @@ def create_peminjaman(request):
     return render(request, 'create_peminjaman.html', {'form': form})
 
 # Fungsi untuk memperbarui peminjaman
+@login_required
 def update_peminjaman(request, peminjaman_id):
     peminjaman = get_object_or_404(peminjaman, pk=peminjaman_id)
     if request.method == 'POST':
@@ -208,6 +240,7 @@ def update_peminjaman(request, peminjaman_id):
     return render(request, 'update_peminjaman.html', {'form': form, 'peminjaman': peminjaman})
 
 # Fungsi untuk menghapus peminjaman
+@login_required
 def delete_peminjaman(request, peminjaman_id):
     peminjaman = get_object_or_404(peminjaman, pk=peminjaman_id)
     peminjaman.delete()
@@ -216,11 +249,13 @@ def delete_peminjaman(request, peminjaman_id):
 
 # PETUGAS
 # Fungsi untuk menambahkan petugas baru
+@login_required
 def list_petugas(request):
     petugass = Petugas.objects.all()
     return render(request, 'petugas.html', {'petugass': petugass})
 
 # Fungsi untuk menambahkan petugas baru
+@login_required
 def create_petugas(request):
     if request.method == 'POST':
         form = PetugasForm(request.POST)
@@ -232,6 +267,7 @@ def create_petugas(request):
     return render(request, 'create_petugas.html', {'form': form})
 
 # Fungsi untuk memperbarui petugas
+@login_required
 def update_petugas(request, petugas_id):
     petugas = get_object_or_404(petugas, pk=petugas_id)
     if request.method == 'POST':
@@ -244,6 +280,7 @@ def update_petugas(request, petugas_id):
     return render(request, 'update_petugas.html', {'form': form, 'petugas': petugas})
 
 # Fungsi untuk menghapus petugas
+@login_required
 def delete_petugas(request, petugas_id):
     petugas = get_object_or_404(petugas, pk=petugas_id)
     petugas.delete()

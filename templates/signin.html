@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/PERPUS_ira.png' %}">
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="header">
+        <p>PERPUS<span>.ira</span></p>
+        <h1>Jelajahi Dunia Ilmu <span>Baca, Belajar, Berkarya!</span></h1>
+    </div>
+    <div class="container">
+        <form action="{% url 'signin' %}"  method="post">
+            {% csrf_token %}
+            <h2>Sign in</h2>
+            <div class="login">
+                <div class="input">
+                    <label for="">Username</label>
+                    <input type="username" name="username" id="username" placeholder="Enter Username">
+                </div>
+                <div class="input">
+                    <label for="">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter Password">
+                </div>
+                <input type="submit" value="Login" id="submit">
+                <p>kembali ke halaman <a href="{% url 'index' %}">Utama</a></p>
+            </div>
+        </form>
+        <div class="side">
+            <!-- <img src="./perpus 2.png" alt=""> -->
+            <img src="{% static 'img/bg2.png' %}" alt="">
+        </div>
+    </div>
+</body>
+
+</html>

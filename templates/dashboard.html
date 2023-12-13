@@ -22,7 +22,7 @@
 <div class="cardBox">
     <div class="card">
         <div>
-            <div class="numbers">1,504</div>
+            <div class="numbers">100+</div>
             <div class="cardName">Anggota</div>
         </div>
 
@@ -33,7 +33,7 @@
 
     <div class="card">
         <div>
-            <div class="numbers">80</div>
+            <div class="numbers">300+</div>
             <div class="cardName">Peminjaman</div>
         </div>
 
@@ -44,7 +44,7 @@
 
     <div class="card">
         <div>
-            <div class="numbers">284</div>
+            <div class="numbers">584</div>
             <div class="cardName">Kategori</div>
         </div>
 
@@ -85,81 +85,20 @@
     <!-- ================= New Customers ================ -->
     <div class="recentCustomers">
         <div class="cardHeader">
-            <h2>Recent Customers</h2>
+            <h2>Recent Actions</h2>
         </div>
 
         <table>
+            {% for recent_agt in anggota %}
             <tr>
                 <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
+                    <div class="imgBx"> <img src="{{recent_agt.foto.url}}" alt=""></div>
                 </td>
                 <td>
-                    <h4>David <br> <span>Italy</span></h4>
+                    <h4>{{ recent_agt.user }} <br> <span>{{ recent_agt.created_at }}</span></h4>
                 </td>
             </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>Amit <br> <span>India</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>David <br> <span>Italy</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>Amit <br> <span>India</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>David <br> <span>Italy</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>Amit <br> <span>India</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>David <br> <span>Italy</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="{% static 'imgs/customer01.jpg'%}" alt=""></div>
-                </td>
-                <td>
-                    <h4>Amit <br> <span>India</span></h4>
-                </td>
-            </tr>
+            {% endfor %}
         </table>
     </div>
 </div>
