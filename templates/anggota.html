@@ -11,7 +11,6 @@
         border-radius: 5px;
         cursor: pointer;
     }
-
     .modal {
         display: none;
         position: fixed;
@@ -23,7 +22,6 @@
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.4);
     }
-
     .modal-content {
         background-color: #efefef;
         margin: 10% auto;
@@ -32,7 +30,6 @@
         border-radius: 4px;
         width: 40%;
     }
-
     .close {
         color: #aaa;
         float: right;
@@ -40,7 +37,6 @@
         font-weight: bold;
         cursor: pointer;
     }
-
     .close:hover,
     .close:focus {
         color: black;
@@ -86,6 +82,28 @@
         border: none; 
         outline: none;
     }
+    .pagination{
+        display:  flex; 
+        gap: 4px; 
+        text-decoration: none; 
+        list-style: none;
+        margin-top: 20px;
+    }
+    .pagination li a{
+        background-color: #e1e1e1; 
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    .pagination li .active{
+        background-color: #b5e006;
+    }
+    .pagination li a:hover{
+        background-color: #b5e006; 
+    }
+
 </style>
 {% endblock css %}
 
@@ -202,14 +220,14 @@
         <ul class="pagination">
             {% if anggotas.has_previous %}
                 <li class="page-item"><a class="page-link" href="?page=1">Previous</a></li>
-            {% else %}
-                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="?page=1">Previous</a></li>
             {% endif %}
 
             {% for num in anggotas.paginator.page_range %}
                 {% if anggotas.number == num %}
-                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                {% else %}
+                    <li class="page-item"><a class="active page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% else %}
                     <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
                 {% endif %}
             {% endfor %}

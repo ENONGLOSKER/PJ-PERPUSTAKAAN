@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_perpus',
-    'simple_history',
 ]
 
 MIDDLEWARE = [

@@ -12,7 +12,7 @@
         </li>
 
         <li>
-            <a href="{% url 'index' %}">
+            <a href="{% url 'dashboard' %}">
                 <span class="icon">
                     <ion-icon name="home-outline"></ion-icon>
                 </span>
@@ -26,6 +26,15 @@
                     <ion-icon name="people-outline"></ion-icon>
                 </span>
                 <span class="title">Anggota</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'list_buku' %}">
+                <span class="icon">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                </span>
+                <span class="title">Buku & Kategori</span>
             </a>
         </li>
 
@@ -44,15 +53,6 @@
                     <ion-icon name="documents-outline"></ion-icon>
                 </span>
                 <span class="title">Kategori</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="{% url 'list_buku' %}">
-                <span class="icon">
-                    <ion-icon name="document-text-outline"></ion-icon>
-                </span>
-                <span class="title">Buku</span>
             </a>
         </li>
 

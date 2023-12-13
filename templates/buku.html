@@ -1,18 +1,44 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block css %}
+<style>
+    .pagination{
+        display:  flex; 
+        gap: 4px; 
+        text-decoration: none; 
+        list-style: none;
+        margin-top: 20px;
+    }
+    .pagination li a{
+        background-color: #e1e1e1; 
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    .pagination li .active{
+        background-color: #b5e006;
+    }
+    .pagination li a:hover{
+        background-color: #b5e006; 
+    }
+</style>
+{% endblock css %}
 {% block content %}
 <div class="topbar">
     <div class="toggle">
         <ion-icon name="menu-outline"></ion-icon>
     </div>
 
-    <div class="search">
-        <label>
-            <input type="text" placeholder="Search here">
-            <ion-icon name="search-outline"></ion-icon>
-        </label>
-    </div>
-
+    <form action="{% url 'list_anggota' %}" method="get">
+        <div class="search">
+            <label>
+                <input type="text" name="cari" placeholder="Search here">
+                <ion-icon name="search-outline"></ion-icon>
+            </label>
+        </div>
+    </form>
     <div class="user">
         <img src="{% static 'imgs/customer01.jpg'%}" alt="">
     </div>
@@ -23,7 +49,7 @@
     <div class="recentOrders">
         <div class="cardHeader">
             <h2>Data Anggota Perpustakaan</h2>
-            <a href="#" class="btn">
+            <a href="{% url 'create_anggota' %}" class="btn" id="openModalBtn">
                 <ion-icon name="add-circle-outline"></ion-icon> 
                 Add Anggota
             </a>
@@ -33,170 +59,77 @@
             <thead>
                 <tr>
                     <td>NO</td>
-                    <td>FOTO</td>
-                    <td>NAMA</td>
-                    <td>JENIS KELAMIN</td>
-                    <td>ALAMAT</td>
-                    <td>EMAIL</td>
-                    <td>NOMOR HP</td>
+                    <td style="text-align: center;">JUDUL</td>
+                    <td>PENULIS</td>
+                    <td>TH TERBIT</td>
+                    <td>KATEGORI</td>
+                    <td>CREATED</td>
                     <td>AKSI</td>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td> 
-                        <div class="user">
-                            <img src="{% static 'imgs/customer01.jpg'%}" alt="">
-                        </div>
-                    </td>
-                    <td>ELQUSAIRI</td>
-                    <td>Laki-Laki</td>
-                    <td>KERUAK</td>
-                    <td>anggota@gmail.com</td>
-                    <td>085337802822</td>
+                {% for buku in bukus %}
+                <tr >
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-align: left;"><a href="{% url 'update_buku' buku.id %}" style="text-decoration: none; color: rgb(92, 147, 10); text-align: start;">{{buku.judul}}</a></td>
+                    <td>{{buku.penulis}}</td>
+                    <td>{{buku.tahun_terbit}}</td>
+                    <td>{{buku.kategori}}</td>
+                    <td>{{buku.created_at}}</td>
                     <td>
-                        <a href="#" class="btn">
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </a>
-                        <a href="#" class="btn">
-                            <ion-icon name="create-outline"></ion-icon>
+                        <a href="{% url 'delete_buku' buku.id %}" onclick="return confirm('yakin ingin menghapus data?')" class="btn" style="width: 40px; height: 15px; background-color: rgb(255, 61, 67); padding:15px 10px 10px 10px; border-radius: 4px; color: rgb(244, 244, 244); align-items: center;text-align: center;">
+                            <ion-icon name="trash-outline"></ion-icon>
                         </a>
                     </td>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td> 
-                        <div class="user">
-                            <img src="{% static 'imgs/customer01.jpg'%}" alt="">
-                        </div>
-                    </td>
-                    <td>ELQUSAIRI</td>
-                    <td>Laki-Laki</td>
-                    <td>KERUAK</td>
-                    <td>anggota@gmail.com</td>
-                    <td>085337802822</td>
-                    <td>
-                        <a href="#" class="btn">
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </a>
-                        <a href="#" class="btn">
-                            <ion-icon name="create-outline"></ion-icon>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td> 
-                        <div class="user">
-                            <img src="{% static 'imgs/customer01.jpg'%}" alt="">
-                        </div>
-                    </td>
-                    <td>ELQUSAIRI</td>
-                    <td>Laki-Laki</td>
-                    <td>KERUAK</td>
-                    <td>anggota@gmail.com</td>
-                    <td>085337802822</td>
-                    <td>
-                        <a href="#" class="btn">
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </a>
-                        <a href="#" class="btn">
-                            <ion-icon name="create-outline"></ion-icon>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td> 
-                        <div class="user">
-                            <img src="{% static 'imgs/customer01.jpg'%}" alt="">
-                        </div>
-                    </td>
-                    <td>ELQUSAIRI</td>
-                    <td>Laki-Laki</td>
-                    <td>KERUAK</td>
-                    <td>anggota@gmail.com</td>
-                    <td>085337802822</td>
-                    <td>
-                        <a href="#" class="btn">
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </a>
-                        <a href="#" class="btn">
-                            <ion-icon name="create-outline"></ion-icon>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td> 
-                        <div class="user">
-                            <img src="{% static 'imgs/customer01.jpg'%}" alt="">
-                        </div>
-                    </td>
-                    <td>ELQUSAIRI</td>
-                    <td>Laki-Laki</td>
-                    <td>KERUAK</td>
-                    <td>anggota@gmail.com</td>
-                    <td>085337802822</td>
-                    <td>
-                        <a href="#" class="btn">
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </a>
-                        <a href="#" class="btn">
-                            <ion-icon name="create-outline"></ion-icon>
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td> 
-                        <div class="user">
-                            <img src="{% static 'imgs/customer01.jpg'%}" alt="">
-                        </div>
-                    </td>
-                    <td>ELQUSAIRI</td>
-                    <td>Laki-Laki</td>
-                    <td>KERUAK</td>
-                    <td>anggota@gmail.com</td>
-                    <td>085337802822</td>
-                    <td>
-                        <a href="#" class="btn">
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </a>
-                        <a href="#" class="btn">
-                            <ion-icon name="create-outline"></ion-icon>
-                        </a>
-                    </td>
-                </tr>
-              
-
-
+                {% endfor %}
+               
             </tbody>
         </table>
+
+        <!-- paginations -->
+        <ul class="pagination">
+            {% if bukus.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">Previous</a></li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="?page=1">Previous</a></li>
+            {% endif %}
+
+            {% for num in bukus.paginator.page_range %}
+                {% if bukus.number == num %}
+                    <li class="page-item"><a class="active page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if bukus.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ bukus.paginator.num_pages }}">Next</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+            {% endif %}
+        </ul>
     </div>
 
     <!-- ================= New Customers ================ -->
     <div class="recentCustomers">
         <div class="cardHeader">
-            <h2>Kategoris</h2>
+            <h2>Kategori Buku</h2>
         </div>
 
         <table>
-            {% for kategori in kategoris %}
+            {% for ktgr in kategoris %}
             <tr>
-                <td width="60px">
-                    <div>
-                        {{forloop.counter}}
-                        
-                    </div>
+                <td>
+                    <h3>{{ ktgr.nama_kategori }}</h3>
                 </td>
                 <td>
-                    <h4>{{kategori.nama_kategori}}</h4>
+                    <h4>{{ ktgr.created_at }} <br> <span>{{ ktgr.updated_at }}</span></h4>
                 </td>
             </tr>
             {% endfor %}
+
         </table>
     </div>
 </div>

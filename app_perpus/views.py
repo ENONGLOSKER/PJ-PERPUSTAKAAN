@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group, Permission
 from django.shortcuts import get_object_or_404
 from datetime import date
 from django.utils import timezone
-from .models import Anggota, Kategori, Petugas, Buku, User
+from .models import Anggota, Kategori, Petugas, Buku, User,Peminjaman
 from .forms import KategoriForm, BukuForm, AnggotaForm, PeminjamanForm, PetugasForm
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
@@ -172,7 +172,23 @@ def delete_kategori(request, kategori_id):
 @login_required
 def list_buku(request):
     bukus = Buku.objects.all()
-    return render(request, 'buku.html', {'bukus': bukus})
+    search_query = request.GET.get('cari')
+
+    if search_query:
+        buku_serc = Buku.objects.filter( Q(judul__icontains=search_query) | Q(kategori__nama_kategori = search_query))
+    else:
+        buku_serc = bukus
+    
+    paginator = Paginator(buku_serc, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    kategoris = Kategori.objects.all()
+    context = {
+        'bukus':page_obj,
+        'kategoris':kategoris,
+    }
+    return render(request, 'buku.html', context)
 
 # Fungsi untuk menambahkan buku baru
 @login_required
@@ -189,7 +205,7 @@ def create_buku(request):
 # Fungsi untuk memperbarui buku
 @login_required
 def update_buku(request, buku_id):
-    buku = get_object_or_404(buku, pk=buku_id)
+    buku = get_object_or_404(Buku, pk=buku_id)
     if request.method == 'POST':
         form = BukuForm(request.POST, instance=buku)
         if form.is_valid():
@@ -202,7 +218,7 @@ def update_buku(request, buku_id):
 # Fungsi untuk menghapus buku
 @login_required
 def delete_buku(request, buku_id):
-    buku = get_object_or_404(buku, pk=buku_id)
+    buku = get_object_or_404(Buku, pk=buku_id)
     buku.delete()
     return redirect('list_buku')
 
@@ -212,7 +228,7 @@ def delete_buku(request, buku_id):
 @login_required
 def list_peminjaman(request):
     peminjamans = Peminjaman.objects.all()
-    return render(request, 'peminjaman.html', {'peminjamans': peminjamans})
+    return render(request, 'peminjam.html', {'peminjamans': peminjamans})
 
 # Fungsi untuk menambahkan peminjaman baru
 @login_required
