@@ -51,7 +51,7 @@
             <h2>Data Anggota Perpustakaan</h2>
             <a href="{% url 'create_anggota' %}" class="btn" id="openModalBtn">
                 <ion-icon name="add-circle-outline"></ion-icon> 
-                Add Anggota
+                Add Buku
             </a>
         </div>
 
@@ -63,7 +63,7 @@
                     <td>PENULIS</td>
                     <td>TH TERBIT</td>
                     <td>KATEGORI</td>
-                    <td>CREATED</td>
+                    <!-- <td>CREATED</td> -->
                     <td>AKSI</td>
                 </tr>
             </thead>
@@ -76,9 +76,9 @@
                     <td>{{buku.penulis}}</td>
                     <td>{{buku.tahun_terbit}}</td>
                     <td>{{buku.kategori}}</td>
-                    <td>{{buku.created_at}}</td>
+                    <!-- <td>{{buku.created_at}}</td> -->
                     <td>
-                        <a href="{% url 'delete_buku' buku.id %}" onclick="return confirm('yakin ingin menghapus data?')" class="btn" style="width: 40px; height: 15px; background-color: rgb(255, 61, 67); padding:15px 10px 10px 10px; border-radius: 4px; color: rgb(244, 244, 244); align-items: center;text-align: center;">
+                        <a href="{% url 'delete_buku' buku.id %}" onclick="return confirm('yakin ingin menghapus data?')" class="btn" style="width: 40px; height: 15px; background-color: rgb(255, 61, 67); padding:10px 6px 6px 6px; border-radius: 4px; color: rgb(244, 244, 244); align-items: center;">
                             <ion-icon name="trash-outline"></ion-icon>
                         </a>
                     </td>

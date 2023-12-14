@@ -190,7 +190,6 @@ def list_buku(request):
     }
     return render(request, 'buku.html', context)
 
-# Fungsi untuk menambahkan buku baru
 @login_required
 def create_buku(request):
     if request.method == 'POST':
