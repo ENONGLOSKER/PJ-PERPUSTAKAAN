@@ -22,7 +22,7 @@
 <div class="cardBox">
     <div class="card">
         <div>
-            <div class="numbers">100+</div>
+            <div class="numbers">{{jlh_anggota}}</div>
             <div class="cardName">Anggota</div>
         </div>
 
@@ -33,7 +33,7 @@
 
     <div class="card">
         <div>
-            <div class="numbers">300+</div>
+            <div class="numbers">{{jlh_peminjam}}</div>
             <div class="cardName">Peminjaman</div>
         </div>
 
@@ -44,7 +44,7 @@
 
     <div class="card">
         <div>
-            <div class="numbers">584</div>
+            <div class="numbers">{{jlh_kategori}}</div>
             <div class="cardName">Kategori</div>
         </div>
 
@@ -55,7 +55,7 @@
 
     <div class="card">
         <div>
-            <div class="numbers">842</div>
+            <div class="numbers">{{jlh_buku}}</div>
             <div class="cardName">Buku</div>
         </div>
 
@@ -103,3 +103,85 @@
     </div>
 </div>
 {% endblock content %}
+{% block js %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    const chart = Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Data Statistic Perpustakaan'
+        },
+        subtitle: {
+            text: 'Data buku, kategori, anggota dan peminjaman buku'
+        },
+        legend: {
+            align: 'right',
+            verticalAlign: 'middle',
+            layout: 'vertical'
+        },
+        xAxis: {
+            categories: ['Anggota', 'Buku', 'Kategori', 'Peminjaman'],
+            labels: {
+                x: -10
+            }
+        },
+        yAxis: {
+            allowDecimals: false,
+            title: {
+                text: 'Jumlah'
+            }
+        },
+        series: [{
+            name: 'Jumlah anggota',
+            data: [{{ jlh_anggota }}],
+            color: 'rgb(255,38,139)' // Warna untuk Anggota
+        }, {
+            name: 'Jumlah buku',
+            data: [{{ jlh_buku }}],
+            color: 'rgb(255,183,15)' // Warna untuk Buku
+        }, {
+            name: 'Jumlah kategori',
+            data: [{{ jlh_kategori }}],
+            color: 'rgb(36,131,255)' // Warna untuk Kategori
+        }, {
+            name: 'Jumlah peminjaman',
+            data: [{{ jlh_peminjam }}],
+            color: 'rgb(135,255,15)' // Warna untuk Peminjaman
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        align: 'center',
+                        verticalAlign: 'bottom',
+                        layout: 'horizontal'
+                    },
+                    yAxis: {
+                        labels: {
+                            align: 'left',
+                            x: 0,
+                            y: -5
+                        },
+                        title: {
+                            text: null
+                        }
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    credits: {
+                        enabled: false
+                    }
+                }
+            }]
+        }
+    });
+</script>
+
+
+{% endblock js %}

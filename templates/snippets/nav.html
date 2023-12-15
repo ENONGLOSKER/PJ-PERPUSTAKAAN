@@ -47,7 +47,7 @@
             </a>
         </li>
 
-        <li>
+        <!-- <li>
             <a href="{% url 'list_kategori' %}">
                 <span class="icon">
                     <ion-icon name="documents-outline"></ion-icon>
@@ -63,10 +63,10 @@
                 </span>
                 <span class="title">Petugas</span>
             </a>
-        </li>
+        </li> -->
 
         <li>
-            <a href="{% url 'signout' %}">
+            <a href="{% url 'signout' %}" onclick="return confirm('yakin ingin Keluar?')">
                 <span class="icon">
                     <ion-icon name="log-out-outline"></ion-icon>
                 </span>

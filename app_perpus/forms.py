@@ -9,6 +9,14 @@ class BukuForm(forms.ModelForm):
     class Meta:
         model = Buku
         fields = "__all__"
+
+        widgets = {
+            'judul': forms.TextInput(attrs={'class': 'form-control'}),
+            'alamat': forms.Textarea(attrs={'class': 'form-control','style':'height: 20px;'}),
+            'penulis': forms.TextInput(attrs={'class': 'form-control'}),
+            'tahun_terbit': forms.TextInput(attrs={'class': 'form-control'}),
+            'kategori': forms.Select(attrs={'class': 'form-control'}),
+        }
         
 class AnggotaForm(forms.ModelForm):
     class Meta:
@@ -44,4 +52,12 @@ class PeminjamanForm(forms.ModelForm):
     class Meta:
         model = Peminjaman
         fields = "__all__"
+
+        widgets = {
+            'buku': forms.Select(attrs={'class': 'form-control'}),
+            'anggota': forms.Select(attrs={'class': 'form-control'}),
+            'tanggal_peminjaman': forms.TextInput(attrs={'class': 'form-control','type':'date'}),
+            'tanggal_pengembalian': forms.TextInput(attrs={'class': 'form-control','type':'date'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+        }
 

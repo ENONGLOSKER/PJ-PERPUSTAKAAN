@@ -17,8 +17,19 @@ def index(request):
     return render(request, 'index.html')
 @login_required
 def dashboard(request):
-    anggotas = Anggota.objects.all()
-    return render(request, 'dashboard.html',{'anggota':anggotas})
+    anggotas = Anggota.objects.all().order_by('-id')
+    anggota = Anggota.objects.all().count()
+    buku = Buku.objects.all().count()
+    kategori = Kategori.objects.all().count()
+    peminjam = Peminjaman.objects.all().count()
+    context= {
+        'anggota':anggotas,
+        'jlh_anggota':anggota,
+        'jlh_buku':buku,
+        'jlh_kategori':kategori,
+        'jlh_peminjam':peminjam,
+        }
+    return render(request, 'dashboard.html',context)
 
 def SigninPage(request):
     if request.method == 'POST':
@@ -199,7 +210,7 @@ def create_buku(request):
             return redirect('list_buku')
     else:
         form = BukuForm()
-    return render(request, 'create_buku.html', {'form': form})
+    return render(request, 'buku_add.html', {'form': form})
 
 # Fungsi untuk memperbarui buku
 @login_required
@@ -212,7 +223,7 @@ def update_buku(request, buku_id):
             return redirect('list_buku')
     else:
         form = BukuForm(instance=buku)
-    return render(request, 'update_buku.html', {'form': form, 'buku': buku})
+    return render(request, 'buku_add.html', {'form': form, 'buku': buku})
 
 # Fungsi untuk menghapus buku
 @login_required
@@ -227,7 +238,25 @@ def delete_buku(request, buku_id):
 @login_required
 def list_peminjaman(request):
     peminjamans = Peminjaman.objects.all()
-    return render(request, 'peminjam.html', {'peminjamans': peminjamans})
+    search_query = request.GET.get('cari')
+
+    if search_query:
+        peminjam = Peminjaman.objects.filter(Q(buku__judul__icontains=search_query) | Q(anggota__icontains=search_query)|Q(status__icontains=search_query)|Q(tanggal_peminjaman__icontains=search_query)|Q(tanggal_pengembalian__icontains=search_query))
+    else:
+        peminjams = peminjamans
+    
+    paginator = Paginator(peminjams,5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    status_pinjam = Peminjaman.objects.filter(status='pinjam').order_by('-id')
+
+    context = {
+        'peminjamans': peminjamans,
+        'peminjams':page_obj,
+        'status_pinjam':status_pinjam,
+        }
+    return render(request, 'peminjam.html', context)
 
 # Fungsi untuk menambahkan peminjaman baru
 @login_required
@@ -239,12 +268,12 @@ def create_peminjaman(request):
             return redirect('list_peminjaman')
     else:
         form = PeminjamanForm()
-    return render(request, 'create_peminjaman.html', {'form': form})
+    return render(request, 'peminjaman_add.html', {'form': form})
 
 # Fungsi untuk memperbarui peminjaman
 @login_required
 def update_peminjaman(request, peminjaman_id):
-    peminjaman = get_object_or_404(peminjaman, pk=peminjaman_id)
+    peminjaman = get_object_or_404(Peminjaman, pk=peminjaman_id)
     if request.method == 'POST':
         form = PeminjamanForm(request.POST, instance=peminjaman)
         if form.is_valid():
@@ -252,12 +281,12 @@ def update_peminjaman(request, peminjaman_id):
             return redirect('list_peminjaman')
     else:
         form = PeminjamanForm(instance=peminjaman)
-    return render(request, 'update_peminjaman.html', {'form': form, 'peminjaman': peminjaman})
+    return render(request, 'peminjaman_add.html', {'form': form, 'peminjaman': peminjaman})
 
 # Fungsi untuk menghapus peminjaman
 @login_required
 def delete_peminjaman(request, peminjaman_id):
-    peminjaman = get_object_or_404(peminjaman, pk=peminjaman_id)
+    peminjaman = get_object_or_404(Peminjaman, pk=peminjaman_id)
     peminjaman.delete()
     return redirect('list_peminjaman')
 
