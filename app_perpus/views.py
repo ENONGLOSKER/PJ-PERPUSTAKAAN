@@ -11,72 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-
-# Create your views here.
-def index(request):
-    return render(request, 'index.html')
-@login_required
-def dashboard(request):
-    anggotas = Anggota.objects.all().order_by('-id')
-    anggota = Anggota.objects.all().count()
-    buku = Buku.objects.all().count()
-    kategori = Kategori.objects.all().count()
-    peminjam = Peminjaman.objects.all().count()
-    context= {
-        'anggota':anggotas,
-        'jlh_anggota':anggota,
-        'jlh_buku':buku,
-        'jlh_kategori':kategori,
-        'jlh_peminjam':peminjam,
-        }
-    return render(request, 'dashboard.html',context)
-
-def SigninPage(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect ('dashboard')
-        else:
-            return redirect('signin')
-    return render(request, 'signin.html')
-
-def SignoutPage(request):
-    logout(request)
-    return redirect('index')
-
-def SignupPage(request):
-    if request.method == 'POST':
-        uname = request.POST.get('username')
-        email = request.POST.get('email')
-        pass1 = request.POST.get('password1')
-        pass2 = request.POST.get('password2')
-
-        if pass1 != pass2:
-            messages.error(request, "Password tidak sama!")
-            return redirect('signup')
-        else:
-            my_user = User.objects.create_user(uname, email, pass1)
-
-            # Menambahkan pengguna ke grup 'tamu' atau mendapatkan grup jika belum ada
-            group, created = Group.objects.get_or_create(name='tamu')
-            my_user.groups.add(group)
-
-            # Menambahkan izin 'view_user' ke pengguna
-            permission = Permission.objects.get(codename='view_user')
-            my_user.user_permissions.add(permission)
-
-            my_user.save()
-            messages.success(request, "Selamat, Register Berhasil!")
-            return redirect('/')
-
-    return render(request, 'signup.html')
- 
 # ANGGOTA
-# Fungsi untuk menambahkan Anggota baru
+# Fungsi untuk menampilkan Anggota 
 @login_required
 def list_anggota(request):
     anggotas = Anggota.objects.all()
@@ -84,7 +20,6 @@ def list_anggota(request):
 
     if search_query:
         anggota_serc = Anggota.objects.filter(
-            # jika berrelasi namaFieldDI TABEL 2__namaFieldDI TABEL 1__ICONTAINS
             Q(user__username__icontains=search_query) | Q(alamat__icontains=search_query)
         )
     else:
@@ -95,7 +30,7 @@ def list_anggota(request):
     page_obj = paginator.get_page(page_number)
 
     user = User.objects.all()
-    recent_anggotas = Anggota.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=7))
+    recent_anggotas = Anggota.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=7)).order_by('-id')[:5]
     context = {
         'recent_anggotas': recent_anggotas,
         'anggotas': page_obj,
@@ -329,3 +264,66 @@ def delete_petugas(request, petugas_id):
     petugas = get_object_or_404(petugas, pk=petugas_id)
     petugas.delete()
     return redirect('list_petugas')
+
+def index(request):
+    return render(request, 'index.html')
+@login_required
+def dashboard(request):
+    anggotas = Anggota.objects.all().order_by('-id')[:5]
+    anggota = Anggota.objects.all().count()
+    buku = Buku.objects.all().count()
+    kategori = Kategori.objects.all().count()
+    peminjam = Peminjaman.objects.all().count()
+    context= {
+        'anggota':anggotas,
+        'jlh_anggota':anggota,
+        'jlh_buku':buku,
+        'jlh_kategori':kategori,
+        'jlh_peminjam':peminjam,
+        }
+    return render(request, 'dashboard.html',context)
+
+def SigninPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect ('dashboard')
+        else:
+            return redirect('signin')
+    return render(request, 'signin.html')
+
+def SignoutPage(request):
+    logout(request)
+    return redirect('index')
+
+def SignupPage(request):
+    if request.method == 'POST':
+        uname = request.POST.get('username')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('password1')
+        pass2 = request.POST.get('password2')
+
+        if pass1 != pass2:
+            messages.error(request, "Password tidak sama!")
+            return redirect('signup')
+        else:
+            my_user = User.objects.create_user(uname, email, pass1)
+
+            # Menambahkan pengguna ke grup 'tamu' atau mendapatkan grup jika belum ada
+            group, created = Group.objects.get_or_create(name='tamu')
+            my_user.groups.add(group)
+
+            # Menambahkan izin 'view_user' ke pengguna
+            permission = Permission.objects.get(codename='view_user')
+            my_user.user_permissions.add(permission)
+
+            my_user.save()
+            messages.success(request, "Selamat, Register Berhasil!")
+            return redirect('/')
+
+    return render(request, 'signup.html')
+ 
