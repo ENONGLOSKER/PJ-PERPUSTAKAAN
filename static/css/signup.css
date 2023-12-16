@@ -1,0 +1,147 @@
+:root{
+    --hijau: #CEFF09;
+    --hitam: #323232;
+    --orange: #FC9201;
+    --abu: #F5F5F5;
+    --putih: #FFFFFF;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body{
+    background: var(--hijau);
+    font-family: 'Kanit', sans-serif;
+}
+
+.header{
+    margin:30px 
+}
+
+.header p{
+    font-size:20px;
+    font-weight: bold;
+}
+
+.header p span{
+    color: var(--orange);
+    font-size:15px;
+}
+
+.header h1{
+    text-align:center;
+    font-size:35px;
+    font-family: 'Kanit', sans-serif;
+}
+
+.header h1 span{
+    display:block;
+    color: var(--orange);
+}
+
+.container{
+    display: flex;
+    height: 500px;
+    margin: 30px ;
+    justify-content: center
+}
+
+form{
+    display:flex;
+    flex-direction: column;
+    width:40%;
+    background-color: #f5f5f5;
+}
+
+form h2{
+    font-size: 1,5rem;
+    text-align: center;
+    margin: 20px 50px 5px 21px;
+}
+
+form .input{
+    display:grid
+}
+
+form .input input{
+    padding:10px;
+}
+
+form .input label{
+    margin:0px 20px;
+    padding:8px;
+    font-size: 12px;
+}
+
+input[type="username"],
+input[type="email"],
+input[type="password"]{
+    margin:0px 20px;
+    border-radius:5px;
+    outline: none;
+    border:none;
+    background: #F5F5F5;
+    cursor:pointer;
+    font-family: 'Kanit', sans-serif;
+}
+
+input[type="submit"]{
+    margin: 30px 10px 10px 10px;
+    padding:7px;
+    transform: translateX(10px);
+    outline: none;
+    border: none;
+    background: var(--hitam);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--putih);
+    border-radius: 4px;
+    width:90%;
+    cursor:pointer;
+    font-family: 'Kanit', sans-serif;
+}
+
+input[type="submit"]:hover{
+    background: var(--hijau);
+    color: var(--hitam);
+}
+
+.login{
+    background:#ffffff;
+    margin:2px 60px 100px 60px;
+    padding: 20px 20px;
+    border-radius:10px;
+}
+
+.login p{
+    text-align: center;
+    font-size: 12px;
+    margin-top: 5px;
+    color: #7c7c7c;
+}
+
+.login p a{
+    text-decoration:none;
+    color: #90dc03;
+    font-weight: bold;
+}
+
+.login p a:hover{
+    color: #376FDE;
+}
+
+.side{
+    display:flex;
+}
+
+.side img{
+    width: 100%;
+    height: 100%
+
+}
+
+
+

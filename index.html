@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeting App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .greeting-container {
+            text-align: center;
+        }
+
+        /* Optional: Add some styles to make it visually appealing */
+        #greeting {
+            color: #333;
+            font-size: 2em;
+        }
+
+        #datetime {
+            color: #555;
+            font-size: 1.2em;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="greeting-container">
+        <h1 id="greeting"></h1>
+        <p id="datetime"></p>
+    </div>
+
+
+    <script>
+      function getGreeting() {
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+
+        let greeting;
+
+        if (currentHour < 12) {
+            greeting = "Good Morning";
+        } else if (currentHour < 18) {
+            greeting = "Good Afternoon";
+        } else {
+            greeting = "Good Evening";
+        }
+
+        return greeting;
+    }
+
+    function updateClock() {
+        const datetimeElement = document.getElementById('datetime');
+
+        function getCurrentDateTime() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+            const currentDateTime = new Date().toLocaleDateString('ID', options);
+            return currentDateTime;
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            const timeString = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+            datetimeElement.textContent = `${getCurrentDateTime()} ${timeString}`;
+        }
+
+        function padZero(number) {
+            return number < 10 ? `0${number}` : number;
+        }
+
+        updateTime(); // Call it once to set the initial time
+
+        // Update the time every second
+        setInterval(updateTime, 1000);
+    }
+
+    // Update greeting and datetime text on the HTML page
+    const greetingElement = document.getElementById('greeting');
+    greetingElement.textContent = getGreeting();
+
+    // Start updating the clock
+    updateClock();
+
+    </script>
+</body>
+</html>

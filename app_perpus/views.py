@@ -323,7 +323,7 @@ def SignupPage(request):
 
             my_user.save()
             messages.success(request, "Selamat, Register Berhasil!")
-            return redirect('/')
+            return redirect('signin')
 
     return render(request, 'signup.html')
  
