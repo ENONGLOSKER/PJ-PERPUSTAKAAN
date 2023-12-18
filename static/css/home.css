@@ -1,6 +1,7 @@
 :root {
     /* warna */
     --satu: #CEFF09;
+    --gradient: #82c900;
     --dua: #ff9c10; 
     --tiga: #323232; 
     --empat: #ffffff; 
@@ -18,7 +19,8 @@ h2 {
 }
 
 body{
-    background:var(--satu);
+    background-image: linear-gradient(90deg, var(--satu), var(--gradient) );
+    /* background:var(--satu); */
     font-family: var(--font);
     color: var(--tiga);
 }
