@@ -95,10 +95,10 @@ span{
     justify-content: end;
 }
 .container .d-r img{
-    border-radius: 12px 0 0 12px;
+    border-radius: 48px 0 0 48px;
     overflow: hidden;
     object-fit: cover;
-    box-shadow: -10px 15px 80px rgb(105, 254, 45);
+    box-shadow: -10px 15px 80px rgb(70, 206, 43);
     max-width: 100%;
     max-height: 100%;
 }
