@@ -128,4 +128,7 @@ span{
     .container .d-l p{
         font-size: 45px;
     }
+    .container .d-r{
+        height: 65vh;
+    }
 }
