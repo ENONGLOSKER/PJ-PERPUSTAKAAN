@@ -24,6 +24,7 @@ body{
 }
 .container{
     display: flex;
+    justify-content: space-between;
     margin: 30px 0;
     gap: 80px;
 }
@@ -38,6 +39,7 @@ span{
     display: flex;
     flex-direction: column;
     gap: 5px;
+    max-width: 50%;
 }
 .container .d-l h1{
     font-weight: bold;
@@ -86,10 +88,44 @@ span{
     font-weight: 400;
     font-size: 28px;
 }
+.container .d-r{
+    display: flex;
+    justify-content: end;
+}
 .container .d-r img{
     border-radius: 12px 0 0 12px;
     overflow: hidden;
     object-fit: cover;
     box-shadow: -10px 15px 80px rgb(105, 254, 45);
+    max-width: 100%;
+    max-height: 100%;
+}
 
+
+@media only screen and (max-width: 600px) {
+    .container{
+        display: flex;
+        flex-direction: column;
+        gap: 80px;
+    }
+    .container .d-l{
+        margin: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        max-width: 100%;  
+    }
+}
+
+@media only screen and (min-width: 1774px) {
+    .container{
+      margin-top: 120px;
+    }
+    .container .d-l h1{
+        font-weight: bold;
+        font-size: 80px;
+    }
+    .container .d-l p{
+        font-size: 45px;
+    }
 }
