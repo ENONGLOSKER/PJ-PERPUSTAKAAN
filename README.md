@@ -35,4 +35,12 @@ pip install -r requirement.txt
 ```bash
 python manage.py runserver
 ```
+
+## cara menjalankan
+env\Scripts\activate
+python manage.py runserver
+
+## cara update
+git pull origin master
+
 <br>
