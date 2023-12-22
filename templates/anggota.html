@@ -243,18 +243,15 @@
     <!-- ================= New Customers ================ -->
     <div class="recentCustomers">
         <div class="cardHeader">
-            <h2>Histori Anggota</h2>
+            <h2>Histori Users</h2>
         </div>
 
         <table>
             
-            {% for his in recent_anggotas %}
+            {% for his in user %}
             <tr>
-                <td width="60px">
-                    <div class="imgBx"> <img src="{{his.foto.url}}" alt=""></div>
-                </td>
                 <td>
-                    <h4>{{ his.user }} <br> <span>{{ his.created_at }}</span></h4>
+                    <h4><a href="{% url 'delete_user' user_id=his.id%}" onclick="return confirm('yakin ingin menghapus data?')" style="text-transform:uppercase; text-decoration: none; color: rgb(255, 61, 67);">{{ his.username }}</a></h4>
                 </td>
             </tr>
             {% endfor %}

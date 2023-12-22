@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User, Group, Permission
-from django.shortcuts import get_object_or_404
 from datetime import date
 from django.utils import timezone
 from .models import Anggota, Kategori, Petugas, Buku, User,Peminjaman
@@ -10,6 +9,19 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+
+
+@staff_member_required
+def delete_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    user.delete()
+    return redirect('list_anggota')
 
 # ANGGOTA
 # Fungsi untuk menampilkan Anggota 
